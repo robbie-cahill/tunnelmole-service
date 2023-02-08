@@ -1,0 +1,14 @@
+.idea
+.vscode
+node_modules
+jspm_packages
+npm-debug.log
+debug.log
+storage
+config-instance.toml
+config-instance.production.toml
+*.log
+*.js
+*.js.map
+dist
+scripts

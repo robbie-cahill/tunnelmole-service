@@ -1,0 +1,43 @@
+environment = "local"
+
+###
+# Config for the web and websockets servers
+# The password is for any routes you want to password protect
+# By default this is only the endpoint that lists active connections for debugging purposes
+###
+[server]
+httpPort = 8000
+websocketPort = 8080
+domain = 'localhost'
+password = 'changeme'
+
+# A list of banned IPs
+bannedIps = [
+    '999.999.999.999',
+]
+
+# A list of banned Client IDs
+bannedClientIds = [
+    'df3453rewr349543utff'
+]
+
+# A list of banned hostnames
+bannedHostnames = [
+    'evil.com'
+]
+
+###
+# MySQL is used for Logging wnen it is enabled
+###
+[mysql]
+host = 'localhost'
+user = 'root'
+password = 'changeme'
+database = 'tunnelmole'
+
+###
+# Enable or disable debug output and logging
+###
+[runtime]
+debug = true
+enableLogging = false
