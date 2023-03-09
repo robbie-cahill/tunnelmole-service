@@ -50,7 +50,14 @@ export default async function initialise(message: InitialiseMessage, websocket: 
     const clientId = message.clientId;
     const hostname = subdomain + '.' + config.server.domain
 
-    const isBannedHostname = await verify(websocket.ipAddress, ...bannedHostnames);
+    let isBannedHostname;
+    
+    try {
+        isBannedHostname = await verify(websocket.ipAddress, ...bannedHostnames);
+    } catch (error) {
+        // Sometimes hostnames fail to be looked up, ignore this error
+        isBannedHostname = false;
+    }
 
     // "Shadow ban" banned client ids and banned ip addresses
     if (isBannedHostname || bannedClientIds.indexOf(clientId) !== INDEX_OF_NOT_FOUND || bannedIps.indexOf(websocket.ipAddress) !== INDEX_OF_NOT_FOUND) {
