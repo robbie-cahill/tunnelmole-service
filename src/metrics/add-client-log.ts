@@ -20,6 +20,8 @@ export default function addClientLog(clientId: string, eventKey: string, eventVa
              "${date}"
         )
     `, (error: any, results: any, fields: any) => {
+        if (error !== null) {
             console.error(error);
+        }
     });
 }
