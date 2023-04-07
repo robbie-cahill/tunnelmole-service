@@ -10,5 +10,6 @@ config-instance.production.toml
 *.log
 *.js
 *.js.map
+*.sql
 dist
 scripts
