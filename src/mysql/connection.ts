@@ -1,6 +1,7 @@
 import config from "../../config";
 
-const mysql      = require('mysql');
+import mysql from 'mysql2';
+
 const connection = mysql.createConnection({
     host     : config.mysql.host,
     user     : config.mysql.user,
