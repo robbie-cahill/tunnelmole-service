@@ -58,7 +58,7 @@ const instanceConfig = {
 export default instanceConfig
 ```
 
-Once this is done compile the client with `npm run build` and then invoke the client with `node dist/src/index.js <port number to forward to>`.
+Once this is done compile the client with `npm run build` and then invoke the client with `node dist/srv/index.js <port number to forward to>`.
 
 You'll see output like:
 ```
@@ -76,9 +76,9 @@ Replace the domain with the domain shown in your `tunnelmole-client` output.
 
 On Linux and Mac, your hosts file is located at `/etc/hosts`. On Windows, its located at `C:\Windows\System32\Drivers\etc\hosts`.
 
-If you want custom domains or other "premium" features, add an API key to `src/authentication/apiKeys.json` in `tunnelmole-service`. You can then run `node dist/src/index.js --set-api-key <your api key>`. All custom subdomains need to be added to your hosts file if you are running `tunnelmole-service` locally.
+If you want custom domains or other "premium" features, add an API key to `src/authentication/apiKeys.json` in `tunnelmole-service`. You can then run `node dist/srv/index.js --set-api-key <your api key>`. All custom subdomains need to be added to your hosts file if you are running `tunnelmole-service` locally.
 
-Then run for example `node dist/src/index.js <port number> as mydomain.localhost` to get a custom subdomain. Add your chosen domain to your hosts file so your computer can resolve it.
+Then run for example `node dist/srv/index.js <port number> as mydomain.localhost` to get a custom subdomain. Add your chosen domain to your hosts file so your computer can resolve it.
 
 Then start a web server listening on your chosen port and hit the `http` URL `tunnelmole-client` gave you you earlier in your browser or other HTTP client and it will work if you've set everything up correctly.
 
@@ -97,22 +97,25 @@ Start the service with `node dist/srv/index.js`. If all went well, the service w
 
 Once this is done, update `config-instance.ts` in `tunnelmole-client` to point to your server.
 ```
-const instanceConfig = {
-    hostip: {
-        endpoint: "wss://foo.com:81"
-    },
-    runtime: {
-        debug: false,
-        enableLogging: true
-    }
-}
+###
+# Config for the web and websockets servers
+# The password is for any routes you want to password protect
+# By default this is only the endpoint that lists active connections for debugging purposes
+###
+[server]
+httpPort = 80
+websocketPort = 81
+domain = 'foo.com'
+password = 'changeme'
 
-export default instanceConfig;
+[runtime]
+debug = true
+enableLogging = false
 ```
 
 At that point, rebuild and run the client like below:
 ```
-npm run build && node dist/src/index.js 3000
+npm run build && node dist/srv/index.js 3000
 ```
 
 Now you'll see output for your server's domain
@@ -174,4 +177,3 @@ Thats the only difference between the code here and whats running on Tunnelmole.
 
 ### Official Website
 The official website for this project is at [https://tunnelmole.com](https://tunnelmole.com). Don't get Tunnelmole from anywhere else other than this website or the official GitHub repositories!
-
