@@ -93,7 +93,7 @@ websocketPort = 81
 domain = 'foo.com'
 password = '********'
 ```
-Start the service with `node dist/srv/index.js`. If all went well, the service will start with no errors.
+Start the service with `node dist/src/index.js`. If all went well, the service will start with no errors.
 
 Once this is done, update `config-instance.ts` in `tunnelmole-client` to point to your server.
 ```
