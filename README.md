@@ -45,17 +45,20 @@ When making any kind of changes to the code, always start off by running both th
 - Update `config-instance.toml` to match the following
 
 ```
-const instanceConfig = {
-    hostip: {
-        endpoint: "ws://localhost:8080"
-    },
-    runtime: {
-        debug: true,
-        enableLogging: true
-    }
-}
+###
+# Config for the web and websockets servers
+# The password is for any routes you want to password protect
+# By default this is only the endpoint that lists active connections for debugging purposes
+###
+[server]
+httpPort = 80
+websocketPort = 81
+domain = 'foo.com'
+password = 'changeme'
 
-export default instanceConfig
+[runtime]
+debug = true
+enableLogging = false
 ```
 
 Once this is done compile the client with `npm run build` and then invoke the client with `node dist/srv/index.js <port number to forward to>`.
@@ -93,29 +96,26 @@ websocketPort = 81
 domain = 'foo.com'
 password = '********'
 ```
-Start the service with `node dist/src/index.js`. If all went well, the service will start with no errors.
+Start the service with `node dist/srv/index.js`. If all went well, the service will start with no errors.
 
 Once this is done, update `config-instance.ts` in `tunnelmole-client` to point to your server.
 ```
-###
-# Config for the web and websockets servers
-# The password is for any routes you want to password protect
-# By default this is only the endpoint that lists active connections for debugging purposes
-###
-[server]
-httpPort = 80
-websocketPort = 81
-domain = 'foo.com'
-password = 'changeme'
+const instanceConfig = {
+    hostip: {
+        endpoint: "ws://foo.com:8080"
+    },
+    runtime: {
+        debug: true,
+        enableLogging: true
+    }
+}
 
-[runtime]
-debug = true
-enableLogging = false
+export default instanceConfig
 ```
 
 At that point, rebuild and run the client like below:
 ```
-npm run build && node dist/srv/index.js 3000
+npm run build && node dist/src/index.js 3000
 ```
 
 Now you'll see output for your server's domain
