@@ -3,7 +3,6 @@ require("source-map-support").install();
 
 import app from "../app";
 import config from "../config";
-import { Request, Response } from "express";
 import * as WebSocket from "ws";
 import websocket from "../websocket";
 import HostipWebSocket from "../src/websocket/host-ip-websocket";

@@ -4,7 +4,6 @@ import Connection from "../connection";
 import ForwardedRequestMessage from "../messages/forwarded-request-message";
 import ForwardedResponseMessage from "../messages/forwarded-response-message";
 import { nanoid } from "nanoid";
-import websocket from "../../websocket";
 
 const capitalize = require("capitalize");
 const tenMinutesInMilliseconds = 300000;
