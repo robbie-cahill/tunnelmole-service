@@ -4,6 +4,7 @@ import log from "./src/logging/log";
 import moment from "moment";
 import Proxy from "./src/proxy";
 import { IncomingMessage } from "http";
+import config from "./config";
 const inArray = require("in_array");
 
 /**
@@ -54,11 +55,12 @@ export default function websocket(
   });
 
   // Log messages if debug is enabled
-  websocket.on("message", (text: string) => {
-    const message = JSON.parse(text);
-    log(Date.now() + " Received " + message.type + " message:", "info");
-    log(message, "info");
-  });
+  if (config.runtime.debug)
+    websocket.on("message", (text: string) => {
+      const message = JSON.parse(text);
+      log(Date.now() + " Received " + message.type + " message:", "info");
+      log(message, "info");
+    });
 
   websocket.on("error", (code: number, reason: string) => {
     console.info("Caught an error. Error code: " + code + " Reason: " + reason);
