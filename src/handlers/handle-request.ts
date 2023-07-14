@@ -32,7 +32,8 @@ const handleRequest = async function (request: Request, response: Response) {
     url: request.originalUrl,
     method: request.method,
     headers,
-    body: request.body.toString("base64"),
+    // Empty body results in {} Object instead of empty Buffer
+    body: Buffer.isBuffer(request.body) ? request.body.toString("base64") : "",
   };
 
   connection.websocket.sendMessage(forwardedRequest);
