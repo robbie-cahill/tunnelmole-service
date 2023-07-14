@@ -43,6 +43,8 @@ export default class Proxy {
 
       if (connection.clientId === clientId) {
         this.connections.splice(i, 1);
+
+        connection.sockets?.forEach((socket) => socket.terminate());
       }
     }
   }

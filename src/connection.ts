@@ -4,4 +4,5 @@ export default class Connection {
   hostname: string;
   clientId: string;
   websocket: HostipWebSocket;
+  sockets?: Map<string, HostipWebSocket>;
 }

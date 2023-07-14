@@ -43,14 +43,16 @@ const handleRequest = async function (request: Request, response: Response) {
     try {
       const forwardedResponseMessage: ForwardedResponseMessage =
         JSON.parse(text);
-      const body = Buffer.from(forwardedResponseMessage.body, "base64");
-      forwardedResponseMessage.headers["x-forwarded-for"] =
-        connection.websocket.ipAddress;
-
       // Bail if this handler is not for the request that created it
       if (forwardedResponseMessage.requestId !== requestId) {
         return;
       }
+
+      const body = forwardedResponseMessage.body
+        ? Buffer.from(forwardedResponseMessage.body, "base64")
+        : null;
+      forwardedResponseMessage.headers["x-forwarded-for"] =
+        connection.websocket.ipAddress;
 
       if (forwardedResponseMessage.type === "forwardedResponse") {
         response.status(forwardedResponseMessage.statusCode);
