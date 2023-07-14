@@ -1,6 +1,6 @@
-import fs from 'fs';
-import toml from 'toml';
+import fs from "fs";
+import toml from "toml";
 
-let config = toml.parse(fs.readFileSync('config-instance.toml').toString());
+let config = toml.parse(fs.readFileSync("config-instance.toml").toString());
 
 export default config;

@@ -1,3 +1,3 @@
 export default function parseJson(body: Buffer): any {
-    return JSON.parse(body.toString());
+  return JSON.parse(body.toString());
 }

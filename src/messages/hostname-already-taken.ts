@@ -1,5 +1,4 @@
-export default interface HostnameAlreadyTakenMessage
-{
-    type: string,
-    hostname : string,
+export default interface HostnameAlreadyTakenMessage {
+  type: string;
+  hostname: string;
 }

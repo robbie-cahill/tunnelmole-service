@@ -7,6 +7,7 @@
     "build": "tsc -p ./",
     "watch": "tsc -p ./ -w",
     "start": "npm run watch & nodemon dist/srv/index.js",
+    "fix": "prettier --write .",
     "start-prod": "node dist/srv/index.js"
   },
   "author": "",
@@ -31,5 +32,9 @@
     "toml": "^3.0.0",
     "typescript": "^4.9.3",
     "ws": "^7.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.0"
   }
 }
