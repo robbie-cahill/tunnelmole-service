@@ -13,7 +13,6 @@ const handleRequest = async function (request: Request, response: Response) {
   const proxy = Proxy.getInstance();
   const url = new URL("https://" + request.headers.host);
   const hostname = url.hostname;
-  const requestId = nanoid();
   const connection: Connection = proxy.findConnectionByHostname(hostname);
 
   if (typeof connection === "undefined") {
@@ -29,6 +28,7 @@ const handleRequest = async function (request: Request, response: Response) {
     headers[name] = value;
   }
 
+  const requestId = nanoid();
   const forwardedRequest: ForwardedRequestMessage = {
     requestId,
     type: "forwardedRequest",
