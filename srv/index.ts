@@ -103,3 +103,7 @@ const interval = setInterval(function ping() {
 wss.on("close", function close() {
   clearInterval(interval);
 });
+
+// Listen for termination signals allows Ctrl+C in docker run
+process.on("SIGINT", () => process.exit(0));
+process.on("SIGTERM", () => process.exit(0));
