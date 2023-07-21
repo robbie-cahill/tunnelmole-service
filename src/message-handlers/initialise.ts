@@ -11,6 +11,10 @@ import { bannedClientIds } from '../../security/banned-client-ids';
 import { INDEX_OF_NOT_FOUND } from '../../constants';
 import { bannedIps } from '../../security/banned-ips';
 import { bannedHostnames } from '../../security/banned-hostnames';
+import ReservedDomain from '../model/reserved-domain';
+import { addReservedDomain } from '../repository/reserved-subdomain-repository';
+import { reserveDomain } from '../reserved-domain/reserved-domain';
+import DomainAlreadyReserved from '../messages/domain-already-reserved';
 const randomstring = require("randomstring");
 
 const RANDOM_SUBDOMAIN_LENGTH = 6;
@@ -44,7 +48,21 @@ export default async function initialise(message: InitialiseMessage, websocket: 
     // By default use a random subdomain unless the subscription is valid and a subdomain is passed
     let subdomain = generateRandomSubdomain(websocket);
     if (validSubscription && typeof message.subdomain === 'string') {
-        subdomain = message.subdomain;
+        const reservedDomain: ReservedDomain = {
+            apiKey: message.apiKey,
+            subdomian: message.subdomain
+        };
+
+        // Reserve and set the requested domain, or send back a message in case of failure
+        if (reserveDomain(message.apiKey, reservedDomain)) {
+            subdomain = message.subdomain;
+        } else {
+            const domainAlreadyReservedMessage: DomainAlreadyReserved = {
+                type: "domainAlreadyReserved"
+            };
+
+            websocket.sendMessage(domainAlreadyReservedMessage);
+        }
     }
 
     const clientId = message.clientId;
