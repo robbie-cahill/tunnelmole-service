@@ -1,9 +1,10 @@
 import moment from "moment-timezone";
 import config from "../../config";
-import connection from "../mysql/connection";
 import { Message } from "../telemetry/message";
+import { getConnection } from "../mysql/connection";
 
 const logTelemetryMessage = async function(message: Message) {
+    const connection = getConnection();
     const enableLogging = config.runtime.enableLogging ?? false;
 
     if (!enableLogging) {

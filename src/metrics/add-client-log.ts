@@ -1,8 +1,9 @@
 import moment from "moment-timezone";
 import config from "../../config";
-import connection from "../mysql/connection";
+import { getConnection } from "../mysql/connection";
 
 export default function addClientLog(clientId: string, eventKey: string, eventValue: string): void {
+    const connection = getConnection();
     const enableLogging = config.runtime.enableLogging ?? false;
 
     if (!enableLogging) {

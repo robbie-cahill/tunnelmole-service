@@ -2,11 +2,21 @@ import config from "../../config";
 
 import mysql from 'mysql2';
 
-const connection = mysql.createConnection({
-    host     : config.mysql.host,
-    user     : config.mysql.user,
-    password : config.mysql.password,
-    database : config.mysql.database
-});
+let connection: mysql.Connection;
 
-export default connection;
+const getConnection = () => {
+    if (!connection) {
+        connection = mysql.createConnection({
+            host     : config.mysql.host,
+            user     : config.mysql.user,
+            password : config.mysql.password,
+            database : config.mysql.database
+        });
+    }
+
+    return connection;
+}
+
+export {
+    getConnection
+};
