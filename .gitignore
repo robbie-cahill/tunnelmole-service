@@ -10,5 +10,5 @@ config-instance.production.toml
 *.log
 *.js
 *.js.map
-dist
-scripts
+/dist
+/scripts
