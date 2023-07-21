@@ -12,4 +12,4 @@ CREATE TABLE IF NOT EXISTS `reserved_domains` (
   `subdomain` VARCHAR(255) NOT NULL,
   `lastUseDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-)
+);
