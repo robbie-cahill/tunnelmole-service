@@ -7,6 +7,11 @@
     "build": "tsc -p ./",
     "watch": "tsc -p ./ -w",
     "start": "npm run watch & nodemon dist/srv/index.js",
+    "fix": "prettier --write .",
+    "docker": "docker build -t thgh/tunnelmole .",
+    "dockerx": "docker buildx build -t thgh/tunnelmole:latest -o type=image --platform=linux/amd64,linux/arm64/v8 --push .",
+    "docker:push": "docker push thgh/tunnelmole",
+    "docker:run": "docker run -it -e PORT=80 -e TUNNELMOLE_API_KEYS=example-only-delete-in-production -p 80:80 tunnelmole",
     "start-prod": "node dist/srv/index.js"
   },
   "author": "",
@@ -31,5 +36,9 @@
     "toml": "^3.0.0",
     "typescript": "^4.9.3",
     "ws": "^7.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.0"
   }
 }

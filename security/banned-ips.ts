@@ -1,3 +1,3 @@
 import config from "../config";
 
-export const bannedIps = config.server.bannedIps; 
+export const bannedIps = config.server.bannedIps;

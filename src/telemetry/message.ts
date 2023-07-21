@@ -1,8 +1,8 @@
 interface Message {
-    type: string,
-    data: {
-        [key: string]: unknown 
-    }
+  type: string;
+  data: {
+    [key: string]: unknown;
+  };
 }
 
-export { Message }
+export { Message };
