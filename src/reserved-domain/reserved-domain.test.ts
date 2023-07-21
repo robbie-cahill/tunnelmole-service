@@ -6,7 +6,9 @@ const mockedFindBySubdomain = findBySubdomain as jest.MockedFunction<typeof find
 
 describe("reserveDomain", () => {
     it("should return true if domain is reserved successfully", async () => {
-        mockedFindBySubdomain.mockResolvedValue(undefined);
+        mockedFindBySubdomain.mockImplementation(async () => {
+            return Promise.resolve(undefined);
+        });
 
         const reservedDomain = { apiKey: "test-api-key", subdomain: "example" };
         const result = await reserveDomain(reservedDomain);
@@ -14,7 +16,12 @@ describe("reserveDomain", () => {
     });
 
     it("should return false if the domain is already reserved by a different apiKey", async () => {
-        mockedFindBySubdomain.mockResolvedValue({ apiKey: "other-api-key", subdomain: "example" });
+        mockedFindBySubdomain.mockImplementation(async () => {
+            return Promise.resolve({ 
+                apiKey: "other-api-key", 
+                subdomain: "example" 
+            });
+        });
 
         const reservedDomain = { apiKey: "test-api-key", subdomain: "example" };
         const result = await reserveDomain(reservedDomain);
