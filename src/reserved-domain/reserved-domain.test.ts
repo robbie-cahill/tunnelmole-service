@@ -1,21 +1,25 @@
-import { addReservedDomain, findBySubdomain } from "../repository/reserved-subdomain-repository";
+import { findBySubdomain } from "../repository/reserved-subdomain-repository";
 import { reserveDomain } from "./reserved-domain";
 
-jest.mock('../repository/reserved-subdomain-repository');
-const mockFindBySubdomain = findBySubdomain as jest.MockedFunction<typeof findBySubdomain>;
+jest.mock("../repository/reserved-subdomain-repository");
+const mockedFindBySubdomain = findBySubdomain as jest.MockedFunction<typeof findBySubdomain>;
 
-describe("Reserved Domain Tests", () => {
-    it ("Should return false if a domain has already been taken by another api key", async () => {
-        mockFindBySubdomain.mockResolvedValue(undefined);
+describe("reserveDomain", () => {
+    it("should return true if domain is reserved successfully", async () => {
+        mockedFindBySubdomain.mockResolvedValue(undefined);
 
-        const result = reserveDomain({
-            apiKey: 'fake-api-key',
-            subdomain: 'mydomain'
-        });
+        const reservedDomain = { apiKey: "test-api-key", subdomain: "example" };
+        const result = await reserveDomain(reservedDomain);
+        expect(result).toBe(true);
+    });
 
-        expect(mockFindBySubdomain).toBeCalledTimes(1);
+    it("should return false if the domain is already reserved by a different apiKey", async () => {
+        mockedFindBySubdomain.mockResolvedValue({ apiKey: "other-api-key", subdomain: "example" });
+
+        const reservedDomain = { apiKey: "test-api-key", subdomain: "example" };
+        const result = await reserveDomain(reservedDomain);
         expect(result).toBe(false);
-    })
+    });
 });
 
 afterEach(() => {
