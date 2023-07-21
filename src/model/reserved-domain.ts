@@ -1,6 +1,6 @@
 export default interface ReservedDomain {
     id?: number,
     apiKey: string,
-    subdomian: string,
+    subdomain: string,
     lastUseDate?: string
 }

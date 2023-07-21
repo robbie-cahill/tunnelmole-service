@@ -18,7 +18,7 @@ const addReservedDomain = async (reservedDomain: ReservedDomain) => {
         INSERT INTO ${RESERVED_DOMAINS} (apiKey, subdomain)
         VALUES (
             '${escape(reservedDomain.apiKey)}',
-            '${escape(reservedDomain.subdomian)}'
+            '${escape(reservedDomain.subdomain)}'
         )
     `);
 }

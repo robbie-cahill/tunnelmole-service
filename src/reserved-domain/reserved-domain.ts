@@ -8,10 +8,10 @@ import { addReservedDomain, findBySubdomain } from "../repository/reserved-subdo
  *  
  * @param reservedDomain 
  */
-const reserveDomain = async(apiKey: string, reservedDomain: ReservedDomain): Promise<boolean> => {
+const reserveDomain = async(reservedDomain: ReservedDomain): Promise<boolean> => {
     // If there is an existing domain belonging to a different apiKey, do not reserve the domain
-    const existingDomain = await findBySubdomain(apiKey);
-    if (existingDomain !== undefined && existingDomain.apiKey !== apiKey) {
+    const existingDomain = await findBySubdomain(reservedDomain.apiKey);
+    if (existingDomain !== undefined && existingDomain.apiKey !== reservedDomain.apiKey) {
         return false;
     }
 

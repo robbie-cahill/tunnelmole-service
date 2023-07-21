@@ -50,11 +50,11 @@ export default async function initialise(message: InitialiseMessage, websocket: 
     if (validSubscription && typeof message.subdomain === 'string') {
         const reservedDomain: ReservedDomain = {
             apiKey: message.apiKey,
-            subdomian: message.subdomain
+            subdomain: message.subdomain
         };
 
         // Reserve and set the requested domain, or send back a message in case of failure
-        if (reserveDomain(message.apiKey, reservedDomain)) {
+        if (reserveDomain(reservedDomain)) {
             subdomain = message.subdomain;
         } else {
             const domainAlreadyReservedMessage: DomainAlreadyReserved = {
