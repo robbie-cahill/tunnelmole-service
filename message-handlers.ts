@@ -5,7 +5,7 @@
 import initialise from "./src/message-handlers/initialise";
 
 const messageHandlers = {
-    initialise
-}
+  initialise,
+};
 
 export { messageHandlers };

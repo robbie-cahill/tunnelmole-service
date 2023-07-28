@@ -1,3 +1,3 @@
 import config from "../config";
 
-export const bannedHostnames = config.server.bannedHostnames; 
+export const bannedHostnames = config.server.bannedHostnames;

@@ -1,12 +1,12 @@
 import config from "../../config";
 
-import mysql from 'mysql2';
+import mysql from "mysql2";
 
-const connection = mysql.createConnection({
-    host     : config.mysql.host,
-    user     : config.mysql.user,
-    password : config.mysql.password,
-    database : config.mysql.database
-});
+const connection =
+  typeof config.mysql === "string"
+    ? mysql.createConnection(config.mysql)
+    : config.mysql
+    ? mysql.createConnection(config.mysql)
+    : null;
 
 export default connection;

@@ -1,18 +1,16 @@
 {
-    "compilerOptions": {
-        "target": "es2018",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "lib": [ "es2015", "es2015.promise", "dom" ],
-        "noImplicitAny": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "esModuleInterop": true,
-        "outDir": "dist"
-    },
-    "exclude": [
-        "packages"
-    ]
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es2015", "es2015.promise", "dom"],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "esModuleInterop": true,
+    "outDir": "dist"
+  },
+  "exclude": ["packages"]
 }
