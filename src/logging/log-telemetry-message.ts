@@ -25,11 +25,8 @@ const logTelemetryMessage = async function(message: Message) {
              '${JSON.stringify(message.data)}'
         )
     `;
-    connection.query(sql, (error: any, results: any, fields: any) => {
-        if (error !== null) {
-            console.error(error);
-        }
-    });
+
+    await connection.query(sql);
 }
 
 export { logTelemetryMessage };
