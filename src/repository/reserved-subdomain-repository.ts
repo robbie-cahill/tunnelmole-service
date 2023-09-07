@@ -12,7 +12,6 @@ const findBySubdomain = async (subdomain: string): Promise<ReservedDomain|undefi
     `;
     const result = await connection.execute(sql);
 
-    console.log(sql);
     return Promise.resolve(result[0]);
 }
 
@@ -25,7 +24,6 @@ const addReservedDomain = async (reservedDomain: ReservedDomain) => {
             ${escape(reservedDomain.subdomain)}
         )
     `;
-    console.log(sql);
     await connection.execute(sql);
 }
 
