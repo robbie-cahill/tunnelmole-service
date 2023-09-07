@@ -11,15 +11,16 @@ import { addReservedDomain, findSubdomainsNotBelongingToApiKey } from "../reposi
 const reserveDomain = async(reservedDomain: ReservedDomain): Promise<boolean> => {
     // If there is an existing domain belonging to a different apiKey, do not reserve the domain
     const existingDomain = await findSubdomainsNotBelongingToApiKey(reservedDomain.apiKey, reservedDomain.subdomain);
-    if (existingDomain !== undefined && existingDomain.apiKey !== reservedDomain.apiKey) {
+    if (existingDomain) {
         return false;
-    }
+    } 
 
     // All good, now reserve the domain
     try {
         await addReservedDomain(reservedDomain);
         return true;
     } catch (error) {
+        console.log(`Error reserving domain: ${JSON.stringify(error)}`)
         return false;
     }
 }
