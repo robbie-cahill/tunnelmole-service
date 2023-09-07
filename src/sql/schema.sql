@@ -13,3 +13,12 @@ CREATE TABLE IF NOT EXISTS `reserved_domains` (
   `lastUseDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `client_log` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `clientId` varchar(255) DEFAULT NULL,
+  `eventKey` varchar(255) DEFAULT NULL,
+  `eventValue` text,
+  `date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
