@@ -58,7 +58,8 @@ export default async function initialise(message: InitialiseMessage, websocket: 
             subdomain = message.subdomain;
         } else {
             const domainAlreadyReservedMessage: DomainAlreadyReserved = {
-                type: "domainAlreadyReserved"
+                type: "domainAlreadyReserved",
+                subdomain
             };
 
             websocket.sendMessage(domainAlreadyReservedMessage);
@@ -102,7 +103,7 @@ export default async function initialise(message: InitialiseMessage, websocket: 
     // if there is an existing connection for this hostname but the client id does not match, send back a hostnameAlreadyTaken message
     const existingConnection = proxy.findConnectionByHostname(hostname);
     if (typeof existingConnection == 'undefined') {
-        addClientLog(clientId, "initialized", hostname);
+        await addClientLog(clientId, "initialized", hostname);
         proxy.addConnection(hostname, websocket, clientId);
     } else if (existingConnection.clientId === clientId) { // Consider using api key instead to establish subdomain ownership?
         proxy.replaceWebsocket(hostname, websocket);

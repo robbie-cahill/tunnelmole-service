@@ -10,7 +10,8 @@
         "noImplicitAny": true,
         "suppressImplicitAnyIndexErrors": true,
         "esModuleInterop": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "skipLibCheck": true
     },
     "exclude": [
         "packages"

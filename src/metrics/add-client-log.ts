@@ -2,8 +2,8 @@ import moment from "moment-timezone";
 import config from "../../config";
 import { getConnection } from "../mysql/connection";
 
-export default function addClientLog(clientId: string, eventKey: string, eventValue: string): void {
-    const connection = getConnection();
+export default async function addClientLog(clientId: string, eventKey: string, eventValue: string): Promise<void> {
+    const connection = await getConnection();
     const enableLogging = config.runtime.enableLogging ?? false;
 
     if (!enableLogging) {
@@ -11,7 +11,7 @@ export default function addClientLog(clientId: string, eventKey: string, eventVa
     }
 
     const date = moment().tz('Australia/Sydney').format('YYYY-MM-DD HH:mm:ss');
-    connection.query(
+    await connection.query(
         `INSERT INTO client_log
          VALUES (
              0,
@@ -20,9 +20,5 @@ export default function addClientLog(clientId: string, eventKey: string, eventVa
              "${connection.escape(eventValue)}",
              "${date}"
         )
-    `, (error: any, results: any, fields: any) => {
-        if (error !== null) {
-            console.error(error);
-        }
-    });
+    `);
 }

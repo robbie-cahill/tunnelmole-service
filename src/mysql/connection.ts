@@ -1,12 +1,12 @@
 import config from "../../config";
 
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 
 let connection: mysql.Connection;
 
-const getConnection = () => {
+const getConnection = async () => {
     if (!connection) {
-        connection = mysql.createConnection({
+        connection = await mysql.createConnection({
             host     : config.mysql.host,
             user     : config.mysql.user,
             password : config.mysql.password,
