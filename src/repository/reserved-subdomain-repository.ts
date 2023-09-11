@@ -26,6 +26,18 @@ const findBySubdomain = async(subdomain: string): Promise<ReservedDomain|undefin
     return Promise.resolve(rows[0] ?? undefined);
 }
 
+
+const countReservedDomainsByApiKey = async(apiKey: string): Promise<number> => {
+    const connection = await getConnection();
+    const sql = `
+        SELECT COUNT(*) AS reservedDomainsCount FROM ${RESERVED_DOMAINS}
+        WHERE apiKey = ${escape(apiKey)}
+    `;
+
+    const [rows, fields] = await connection.execute(sql);
+    return Promise.resolve(rows[0].reservedDomainsCount ?? 0);
+}
+
 const addReservedDomain = async(reservedDomain: ReservedDomain) => {
     // Don't add a duplicate record if the domain already exists
     const existingReservedDomain = await findBySubdomain(reservedDomain.subdomain);
@@ -47,5 +59,6 @@ const addReservedDomain = async(reservedDomain: ReservedDomain) => {
 export {
     findBySubdomain,
     findSubdomainsNotBelongingToApiKey,
+    countReservedDomainsByApiKey,
     addReservedDomain
 }

@@ -13,8 +13,10 @@ import { bannedIps } from '../../security/banned-ips';
 import { bannedHostnames } from '../../security/banned-hostnames';
 import ReservedDomain from '../model/reserved-domain';
 import { addReservedDomain } from '../repository/reserved-subdomain-repository';
-import { reserveDomain } from '../reserved-domain/reserved-domain';
+import { DOMAIN_ALREADY_RESERVED, ERROR, SUCCESS, TOO_MANY_DOMAINS, reserveDomain } from '../reserved-domain/reserved-domain';
 import DomainAlreadyReserved from '../messages/domain-already-reserved';
+import TooManyDomains from '../messages/domain-reservation-error';
+import DomainReservationError from '../messages/domain-reservation-error';
 const randomstring = require("randomstring");
 
 const RANDOM_SUBDOMAIN_LENGTH = 6;
@@ -54,15 +56,35 @@ export default async function initialise(message: InitialiseMessage, websocket: 
         };
 
         // Reserve and set the requested domain, or send back a message in case of failure
-        if (reserveDomain(reservedDomain)) {
-            subdomain = message.subdomain;
-        } else {
-            const domainAlreadyReservedMessage: DomainAlreadyReserved = {
-                type: "domainAlreadyReserved",
-                subdomain
-            };
+        const result = await reserveDomain(reservedDomain);
+        switch (result) {
+            case TOO_MANY_DOMAINS:
+                const tooManyDomains: TooManyDomains = {
+                    type: "tooManyDomains",
+                    subdomain
+                }
 
-            websocket.sendMessage(domainAlreadyReservedMessage);
+                websocket.sendMessage(tooManyDomains);
+                break;
+            case DOMAIN_ALREADY_RESERVED:
+                const domainAlreadyReservedMessage: DomainAlreadyReserved = {
+                    type: "domainAlreadyReserved",
+                    subdomain,
+                }
+
+                websocket.sendMessage(domainAlreadyReservedMessage);
+                break;
+            case SUCCESS:
+                subdomain = message.subdomain;
+                break;
+            case ERROR:
+                const domainReservationError: DomainReservationError = {
+                    type: "domainReservationError",
+                    subdomain
+                }
+
+                websocket.sendMessage(domainReservationError);
+                break;
         }
     }
 
