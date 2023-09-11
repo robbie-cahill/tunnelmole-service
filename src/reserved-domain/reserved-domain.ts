@@ -30,7 +30,7 @@ const reserveDomain = async(reservedDomain: ReservedDomain): Promise<string> => 
     // All good, now reserve the domain
     try {
         const domainCount = await countReservedDomainsByApiKey(apiKey);
-        const domainLimit = await getDomainLimit(apiKey); // Hardcoded to 10 for now
+        const domainLimit = await getDomainLimit(apiKey); // Hardcoded to 10 for now, mainly as an abuse prevention mechanism
 
         if (domainCount > domainLimit) {
             console.info(`API Key ${apiKey} has a limit of ${domainLimit} but tried to reserve ${domainCount} domains`);
