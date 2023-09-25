@@ -56,9 +56,24 @@ const addReservedDomain = async(reservedDomain: ReservedDomain) => {
     await connection.execute(sql);
 }
 
+/**
+ * Delete the reserved domain only if the apiKey and subdomain have a matching record
+ * 
+ * @param apiKey
+ * @param subdomain 
+ */
+const deleteReservedDomain = async(apiKey: string, subdomain: string): Promise<void> => {
+    const connection = await getConnection();
+    const sql = `
+        DELETE FROM ${RESERVED_DOMAINS} WHERE apiKey = ${escape(apiKey)} AND subdomain = ${escape(subdomain)}
+    `;
+    await connection.execute(sql);
+}
+
 export {
     findBySubdomain,
     findSubdomainsNotBelongingToApiKey,
     countReservedDomainsByApiKey,
-    addReservedDomain
+    addReservedDomain,
+    deleteReservedDomain
 }
