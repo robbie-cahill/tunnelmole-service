@@ -29,13 +29,17 @@ const handleRequest = async function(request : Request, response : Response) {
         headers[name] = value;
     }
 
+    // Get the request body, wether binary or text as a base64 string for trouble-free transmission over the WebSocket connection
+    // Unless its just an empty object, then set it to an empty string
+    const body = JSON.stringify(request.body) === JSON.stringify({}) ? '' : request.body.toString('base64');
+
     const forwardedRequest : ForwardedRequestMessage = {
         requestId,
         type: "forwardedRequest",
         url : request.originalUrl,
         method : request.method,
         headers,
-        body : request.body.toString('base64')
+        body
     }
 
     connection.websocket.sendMessage(forwardedRequest);
