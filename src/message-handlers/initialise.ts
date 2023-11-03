@@ -16,7 +16,7 @@ import { DOMAIN_ALREADY_RESERVED, ERROR, SUCCESS, TOO_MANY_DOMAINS, reserveDomai
 import DomainAlreadyReserved from '../messages/domain-already-reserved';
 import TooManyDomains from '../messages/domain-reservation-error';
 import DomainReservationError from '../messages/domain-reservation-error';
-import authorize from '../authentication/authorize';
+import { authorize } from '../authentication/authorize';
 const randomstring = require("randomstring");
 
 const RANDOM_SUBDOMAIN_LENGTH = 6;
