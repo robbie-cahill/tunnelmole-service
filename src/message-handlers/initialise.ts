@@ -4,7 +4,6 @@ import HostnameAssignedMessage from '../messages/hostname-assigned-message';
 import config from '../../config';
 import Proxy from '../proxy';
 import HostnameAlreadyTakenMessage from '../messages/hostname-already-taken';
-import { authorize } from '../authentication';
 import InvalidSubscriptionMessage from '../messages/invalid-subscription-message';
 import addClientLog from '../metrics/add-client-log';
 import { bannedClientIds } from '../../security/banned-client-ids';
@@ -17,6 +16,7 @@ import { DOMAIN_ALREADY_RESERVED, ERROR, SUCCESS, TOO_MANY_DOMAINS, reserveDomai
 import DomainAlreadyReserved from '../messages/domain-already-reserved';
 import TooManyDomains from '../messages/domain-reservation-error';
 import DomainReservationError from '../messages/domain-reservation-error';
+import authorize from '../authentication/authorize';
 const randomstring = require("randomstring");
 
 const RANDOM_SUBDOMAIN_LENGTH = 6;
