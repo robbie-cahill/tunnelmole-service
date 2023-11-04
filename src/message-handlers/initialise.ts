@@ -26,7 +26,7 @@ const { verify } = require('reverse-dns-lookup');
 export default async function initialise(message: InitialiseMessage, websocket: HostipWebSocket) {
     let validSubscription = false;
     if (typeof message.apiKey === 'string') {
-        validSubscription = await authorize(message.apiKey);
+        validSubscription = await authorize(message.apiKey, websocket);
 
         if (!validSubscription) {
             const invalidSubscriptionMessage : InvalidSubscriptionMessage = {
