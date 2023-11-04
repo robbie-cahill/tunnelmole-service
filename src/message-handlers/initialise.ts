@@ -69,7 +69,7 @@ export default async function initialise(message: InitialiseMessage, websocket: 
             case DOMAIN_ALREADY_RESERVED:
                 const domainAlreadyReservedMessage: DomainAlreadyReserved = {
                     type: "domainAlreadyReserved",
-                    subdomain,
+                    subdomain: message.subdomain,
                 }
 
                 websocket.sendMessage(domainAlreadyReservedMessage);
