@@ -7,7 +7,7 @@
     "build": "tsc -p ./",
     "watch": "tsc -p ./ -w",
     "test": "npm run build && jest",
-    "start": "npm run watch & nodemon dist/srv/index.js",
+    "start": "docker-compose up & npm run watch & nodemon dist/srv/index.js",
     "start-prod": "node dist/srv/index.js"
   },
   "author": "",
