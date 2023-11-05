@@ -1,7 +1,8 @@
 import fs from 'fs';
 import { ROOT_DIR } from '../../constants';
+import HostipWebSocket from '../websocket/host-ip-websocket';
 
-const authorize = async(apiKey: string) : Promise<boolean> => {
+const authorize = async(apiKey: string, clientId: string, websocket: HostipWebSocket) : Promise<boolean> => {
     const apiKeys = JSON.parse(fs.readFileSync(ROOT_DIR + "/src/authentication/apiKeys.json").toString());
 
     const apiKeyRecord = apiKeys.find((record: any) => {

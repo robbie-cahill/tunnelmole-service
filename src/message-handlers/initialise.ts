@@ -26,7 +26,7 @@ const { verify } = require('reverse-dns-lookup');
 export default async function initialise(message: InitialiseMessage, websocket: HostipWebSocket) {
     let validSubscription = false;
     if (typeof message.apiKey === 'string') {
-        validSubscription = await authorize(message.apiKey);
+        validSubscription = await authorize(message.apiKey, message.clientId, websocket);
 
         if (!validSubscription) {
             const invalidSubscriptionMessage : InvalidSubscriptionMessage = {
@@ -126,7 +126,7 @@ export default async function initialise(message: InitialiseMessage, websocket: 
     const existingConnection = proxy.findConnectionByHostname(hostname);
     if (typeof existingConnection == 'undefined') {
         await addClientLog(clientId, "initialized", hostname);
-        proxy.addConnection(hostname, websocket, clientId);
+        proxy.addConnection(hostname, websocket, clientId, message.apiKey, websocket.ipAddress);
     } else if (existingConnection.clientId === clientId) { // Consider using api key instead to establish subdomain ownership?
         proxy.replaceWebsocket(hostname, websocket);
     } else {
