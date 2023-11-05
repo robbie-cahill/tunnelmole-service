@@ -17,12 +17,14 @@ export default class Proxy {
         return connection;
     }
 
-    addConnection(hostname: string, websocket: HostipWebSocket, clientId: string): void {
+    addConnection(hostname: string, websocket: HostipWebSocket, clientId: string, apiKey: string, ipAddress: string): void {
         websocket.tunnelmoleClientId = clientId;
 
         const connection : Connection = {
             hostname,
             clientId,
+            ipAddress,
+            apiKey,
             websocket
         };
 

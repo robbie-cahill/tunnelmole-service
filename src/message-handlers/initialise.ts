@@ -126,7 +126,7 @@ export default async function initialise(message: InitialiseMessage, websocket: 
     const existingConnection = proxy.findConnectionByHostname(hostname);
     if (typeof existingConnection == 'undefined') {
         await addClientLog(clientId, "initialized", hostname);
-        proxy.addConnection(hostname, websocket, clientId);
+        proxy.addConnection(hostname, websocket, clientId, message.apiKey, websocket.ipAddress);
     } else if (existingConnection.clientId === clientId) { // Consider using api key instead to establish subdomain ownership?
         proxy.replaceWebsocket(hostname, websocket);
     } else {
