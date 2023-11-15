@@ -24,32 +24,15 @@ const RANDOM_SUBDOMAIN_LENGTH = 6;
 const { verify } = require('reverse-dns-lookup');
 
 export default async function initialise(message: InitialiseMessage, websocket: HostipWebSocket) {
-    let validSubscription = false;
-    if (typeof message.apiKey === 'string') {
-        validSubscription = await authorize(message.apiKey, message.clientId, websocket);
-
-        if (!validSubscription) {
-            const invalidSubscriptionMessage : InvalidSubscriptionMessage = {
-                type: "invalidSubscription",
-                apiKey: message.apiKey
-            }
-
-            websocket.sendMessage(invalidSubscriptionMessage);
-        }
-    }
-
-    if (typeof message.apiKey !== 'string' && message.subdomain) {
-            const invalidSubscriptionMessage : InvalidSubscriptionMessage = {
-            type: "invalidSubscription",
-            apiKey: null
-        }
-
-        websocket.sendMessage(invalidSubscriptionMessage);
+    const authorized = await authorize(message, websocket);
+    if (authorized === false) {
+        // You shall not pass
+        return false;
     }
 
     // By default use a random subdomain unless the subscription is valid and a subdomain is passed
     let subdomain = generateRandomSubdomain(websocket);
-    if (validSubscription && typeof message.subdomain === 'string') {
+    if (typeof message.subdomain === 'string') {
         const reservedDomain: ReservedDomain = {
             apiKey: message.apiKey,
             subdomain: message.subdomain
