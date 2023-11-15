@@ -12,6 +12,10 @@ export default class Proxy {
         return connection;
     }
 
+    findConnectionsByClientId(clientId: string): Connection[] {
+        return this.connections.filter((connection: Connection) => connection.clientId === clientId);        
+    }
+
     findConnectionByHostname(hostname : string) : Connection|undefined {
         const connection : Connection|undefined = this.connections.find(connection => connection.hostname === hostname);
         return connection;
