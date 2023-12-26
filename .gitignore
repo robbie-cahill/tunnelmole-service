@@ -1,5 +1,6 @@
 .idea
 .vscode
+.nvim.lua
 node_modules
 jspm_packages
 npm-debug.log
