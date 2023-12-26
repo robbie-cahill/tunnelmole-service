@@ -1,0 +1,69 @@
+require("dap").adapters.node2 = function(cb, config)
+  if config.preLaunchTask then
+    vim.fn.system(config.preLaunchTask)
+  end
+  local adapter = {
+    type = 'executable',
+    command = 'node',
+    args = {os.getenv('HOME') .. '/Pkg/vscode-node-debug2/out/src/nodeDebug.js'},
+  }
+  cb(adapter)
+end
+
+local js_based_languages = { "typescript", "javascript", "typescriptreact" }
+
+for _, language in ipairs(js_based_languages) do
+	require("dap").configurations[language] = {
+	    {
+	      name = "Start Tunnelmole Service",
+        type = "pwa-node",
+	      request = "launch",
+	      program = "${workspaceFolder}/dist/srv/index.js",
+	      cwd = "${workspaceFolder}",
+	      console = "internalConsole",
+	      preLaunchTask = "tsc: build - tsconfig.json",
+	      internalConsoleOptions = "openOnSessionStart"
+	    },
+	    {
+	      name = "Debug Jest Tests",
+        type = "pwa-node",
+	      request = "launch",
+	      runtimeArgs = {"--inspect-brk", "${workspaceRoot}/node_modules/.bin/jest", "--runInBand", "--coverage", "false"},
+	      console = "internalConsole",
+	      preLaunchTask = "tsc: build - tsconfig.json",
+	      internalConsoleOptions = "openOnSessionStart"
+	    }
+	}
+end
+
+--[[
+              type = "pwa-node",
+	      request = "launch",
+	      name = "Auto PR",
+	      program = "${workspaceFolder}/dist/bin/auto-pr.js",
+	      cwd = "${workspaceFolder}",
+	      console = "internalConsole",
+	      internalConsoleOptions = "openOnSessionStart"
+	    },
+]]
+
+--[[
+for _, language in ipairs(js_based_languages) do
+  require("dap").configurations[language] = {
+    {
+      type = "pwa-node",
+      request = "launch",
+      name = "Launch file",
+      program = "${file}",
+      cwd = "${workspaceFolder}",
+    },
+    {
+      type = "pwa-node",
+      request = "attach",
+      name = "Attach",
+      processId = require 'dap.utils'.pick_process,
+      cwd = "${workspaceFolder}",
+    }
+  }
+end
+]]
