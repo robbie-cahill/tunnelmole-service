@@ -18,11 +18,6 @@ app.listen(HTTP_PORT, () => {
     console.log('Tunnelmole Service listening on http port ' + HTTP_PORT);
 });
 
-app.use((err: Error, req: Request, res: Response, next: Function) => {
-    console.error(err.stack);
-    res.status(500).send(`Something broke!`);
-});
-
 // Set up WebSocket server
 const wss = new WebSocket.Server({
     port: config.server.websocketPort,

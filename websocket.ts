@@ -18,45 +18,60 @@ export default function websocket(websocket: HostipWebSocket, request: IncomingM
 
     // Hack: Punch in HostipWebsocket sendMessage
     websocket.sendMessage = function sendMessage(object : any) {
-        const json = JSON.stringify(object);
-        websocket.send(json);
+        try {
+            const json = JSON.stringify(object);
+            websocket.send(json);
+        } catch (error) {
+            console.error("Caught error when sending a websocket message to the client");
+            console.error(error);
+        }
     }
 
     /**
      * Find the handler for a message and run it
      **/
     websocket.on('message', (text : string) => {
-        const message = JSON.parse(text);
+        try {
+            const message = JSON.parse(text);
 
-        if (typeof message.type !== 'string') {
-            console.error("Invalid message, type is missing or invalid");
-            return;
+            if (typeof message.type !== 'string') {
+                console.error("Invalid message, type is missing or invalid");
+                return;
+            }
+
+            // Skip any messages that are handled dynamically using other explicitly defined 'message' callbacks
+            // Example: forwardedResponse handler in handleRequest that is set dynamically for every request
+            const dynamicallyHandledMessageTypes = [
+                'forwardedResponse'
+            ];
+
+            if (inArray(message.type, dynamicallyHandledMessageTypes)) {
+                return;
+            }
+
+            if (typeof messageHandlers[message.type] !== 'function') {
+                console.error("Handler not found for message type " + message.type);
+                return;
+            }
+
+            const handler = messageHandlers[message.type];
+            handler(message, websocket);
+        } catch (error) {
+            console.error("Caught error when processing websocket message");
+            console.error(error);
         }
-
-        // Skip any messages that are handled dynamically using other explicitly defined 'message' callbacks
-        // Example: forwardedResponse handler in handleRequest that is set dynamically for every request
-        const dynamicallyHandledMessageTypes = [
-            'forwardedResponse'
-        ];
-
-        if (inArray(message.type, dynamicallyHandledMessageTypes)) {
-            return;
-        }
-
-        if (typeof messageHandlers[message.type] !== 'function') {
-            console.error("Handler not found for message type " + message.type);
-            return;
-        }
-
-        const handler = messageHandlers[message.type];
-        handler(message, websocket);
     });
 
     // Log messages if debug is enabled
     websocket.on('message', (text: string) => {
-        const message = JSON.parse(text);
-        log(Date.now() + " Received " + message.type + " message:", "info");
-        log(message, 'info');
+        try {
+            const message = JSON.parse(text);
+            log(Date.now() + " Received " + message.type + " message:", "info");
+            log(message, 'info');
+        } catch (error) {
+            console.error("Caught error when logging websocket message for debug mode");
+            console.error(error);
+        }
     });
 
     websocket.on('error', (code: number, reason: string) => {
@@ -64,12 +79,17 @@ export default function websocket(websocket: HostipWebSocket, request: IncomingM
     });
 
     websocket.on('close', (code: number, reason: string) => {
-        websocket.terminate();
+        try {
+            websocket.terminate();
 
-        const proxy = Proxy.getInstance();
+            const proxy = Proxy.getInstance();
 
-        proxy.deleteConnection(websocket.tunnelmoleClientId);
+            proxy.deleteConnection(websocket.tunnelmoleClientId);
 
-        console.info("Connection Closed. Code: " + code + " Reason: " + reason);
+            console.info("Connection Closed. Code: " + code + " Reason: " + reason);
+        } catch (error) {
+            console.error("Caught error when closing websocket connection");
+            console.error(error);           
+        } 
     });
 }
