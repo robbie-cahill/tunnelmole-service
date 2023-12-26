@@ -45,9 +45,7 @@ const wss = new WebSocket.Server({
 });
 
 wss.on('connection', websocket);
-wss.on('error', function error(err) {
-  console.error('Websocket Server Error: ', err);
-});
+
 
 // Ping/pong to stop connection timing out after 60 seconds (websocket default)
 function noop() {}
