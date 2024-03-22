@@ -4,14 +4,12 @@ import HostnameAssignedMessage from '../messages/hostname-assigned-message';
 import config from '../../config';
 import Proxy from '../proxy';
 import HostnameAlreadyTakenMessage from '../messages/hostname-already-taken';
-import InvalidSubscriptionMessage from '../messages/invalid-subscription-message';
 import addClientLog from '../metrics/add-client-log';
 import { bannedClientIds } from '../../security/banned-client-ids';
 import { INDEX_OF_NOT_FOUND } from '../../constants';
 import { bannedIps } from '../../security/banned-ips';
 import { bannedHostnames } from '../../security/banned-hostnames';
 import ReservedDomain from '../model/reserved-domain';
-import { addReservedDomain } from '../repository/reserved-subdomain-repository';
 import { DOMAIN_ALREADY_RESERVED, ERROR, SUCCESS, TOO_MANY_DOMAINS, reserveDomain } from '../reserved-domain/reserved-domain';
 import DomainAlreadyReserved from '../messages/domain-already-reserved';
 import TooManyDomains from '../messages/domain-reservation-error';
@@ -25,11 +23,14 @@ const { verify } = require('reverse-dns-lookup');
 
 export default async function initialise(message: InitialiseMessage, websocket: HostipWebSocket) {
     let subdomain = generateRandomSubdomain(websocket);
-    const authorized = await authorize(message, websocket, subdomain);
+
+    if (config.server.authorizationRequired) {
+        const authorized = await authorize(message, websocket, subdomain);
     
-    if (authorized === false) {
-        // You shall not pass
-        return false;
+        if (authorized === false) {
+            // You shall not pass
+            return false;
+        }
     }
 
     // By default use a random subdomain unless the subscription is valid and a subdomain is passed

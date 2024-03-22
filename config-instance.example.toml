@@ -26,6 +26,9 @@ bannedHostnames = [
     'evil.com'
 ]
 
+# Specify whether connections need API key
+authorizationRequired = true
+
 ###
 # MySQL is used for Logging wnen it is enabled
 ###
