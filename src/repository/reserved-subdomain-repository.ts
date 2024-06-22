@@ -1,74 +1,91 @@
-import { escape } from "mysql2";
 import ReservedDomain from "../model/reserved-domain";
-import { getConnection } from "../mysql/connection";
+import { runPreparedStatement } from "../mysql/run-prepared-statement";
 
 const RESERVED_DOMAINS = 'reserved_domains'
 
-const findSubdomainsNotBelongingToApiKey = async(apiKey: string, subdomain: string): Promise<ReservedDomain|undefined> => {
-    const connection = await getConnection();
-    const sql = `
-        SELECT * FROM ${RESERVED_DOMAINS} 
-        WHERE subdomain = ${escape(subdomain)}
-        AND apiKey <> ${escape(apiKey)}
-    `;
-    const [rows, fields] = await connection.execute(sql);
-    return Promise.resolve(rows[0] ?? undefined);
-}
+// Find subdomains not belonging to a specific apiKey
+const findSubdomainsNotBelongingToApiKey = async (apiKey: string, subdomain: string): Promise<ReservedDomain | undefined> => {
+    try {
+        const [rows]: any = await runPreparedStatement(
+            `
+            SELECT * FROM ${RESERVED_DOMAINS}
+            WHERE subdomain = ? AND apiKey <> ?
+            `,
+            [subdomain, apiKey]
+        );
+        return rows[0] ?? undefined;
+    } catch (error) {
+        console.error('Failed to find subdomains not belonging to apiKey:', error);
+        throw error; // Ensure the caller can handle the error
+    }
+};
 
-const findBySubdomain = async(subdomain: string): Promise<ReservedDomain|undefined> => {
-    const connection = await getConnection();
-    const sql = `
-        SELECT * FROM ${RESERVED_DOMAINS} 
-        WHERE subdomain = ${escape(subdomain)}
-    `;
-    const [rows, fields] = await connection.execute(sql);
+// Find by subdomain
+const findBySubdomain = async (subdomain: string): Promise<ReservedDomain | undefined> => {
+    try {
+        const [rows]: any = await runPreparedStatement(
+            `
+            SELECT * FROM ${RESERVED_DOMAINS}
+            WHERE subdomain = ?
+            `,
+            [subdomain]
+        );
+        return rows[0] ?? undefined;
+    } catch (error) {
+        console.error('Failed to find by subdomain:', error);
+        throw error; // Ensure the caller can handle the error
+    }
+};
 
-    return Promise.resolve(rows[0] ?? undefined);
-}
+// Count reserved domains by apiKey
+const countReservedDomainsByApiKey = async (apiKey: string): Promise<number> => {
+    try {
+        const [rows]: any = await runPreparedStatement(
+            `
+            SELECT COUNT(*) AS reservedDomainsCount FROM ${RESERVED_DOMAINS}
+            WHERE apiKey = ?
+            `,
+            [apiKey]
+        );
+        return rows[0].reservedDomainsCount ?? 0;
+    } catch (error) {
+        console.error('Failed to count reserved domains by apiKey:', error);
+        throw error; // Ensure the caller can handle the error
+    }
+};
 
-
-const countReservedDomainsByApiKey = async(apiKey: string): Promise<number> => {
-    const connection = await getConnection();
-    const sql = `
-        SELECT COUNT(*) AS reservedDomainsCount FROM ${RESERVED_DOMAINS}
-        WHERE apiKey = ${escape(apiKey)}
-    `;
-
-    const [rows, fields] = await connection.execute(sql);
-    return Promise.resolve(rows[0].reservedDomainsCount ?? 0);
-}
-
-const addReservedDomain = async(reservedDomain: ReservedDomain) => {
-    // Don't add a duplicate record if the domain already exists
+// Add a reserved domain
+const addReservedDomain = async (reservedDomain: ReservedDomain) => {
     const existingReservedDomain = await findBySubdomain(reservedDomain.subdomain);
     if (existingReservedDomain !== undefined) {
         return;
     }
 
-    const connection = await getConnection();
-    const sql = `
+    await runPreparedStatement(
+        `
         INSERT INTO ${RESERVED_DOMAINS} (apiKey, subdomain)
-        VALUES (
-            ${escape(reservedDomain.apiKey)},
-            ${escape(reservedDomain.subdomain)}
-        )
-    `;
-    await connection.execute(sql);
-}
+        VALUES (?, ?)
+        `,
+        [reservedDomain.apiKey, reservedDomain.subdomain]
+    );
+};
 
 /**
  * Delete the reserved domain only if the apiKey and subdomain have a matching record
- * 
+ *
  * @param apiKey
- * @param subdomain 
+ * @param subdomain
  */
-const deleteReservedDomain = async(apiKey: string, subdomain: string): Promise<void> => {
-    const connection = await getConnection();
-    const sql = `
-        DELETE FROM ${RESERVED_DOMAINS} WHERE apiKey = ${escape(apiKey)} AND subdomain = ${escape(subdomain)}
-    `;
-    await connection.execute(sql);
-}
+const deleteReservedDomain = async (apiKey: string, subdomain: string): Promise<void> => {
+    await runPreparedStatement(
+        `
+        DELETE FROM ${RESERVED_DOMAINS}
+        WHERE apiKey = ? AND subdomain = ?
+        `,
+        [apiKey, subdomain]
+    );
+};
+
 
 export {
     findBySubdomain,
