@@ -156,12 +156,16 @@ password = 'changeme'
 
 To get HTTPs, you will need to register your own SSL certificate (Lets Encrypt can get you one for free) and configure a reverse proxy server such as Nginx to proxy to `tunnelmole-service` over HTTP and Websocket.
 
-### License
+### Open Source License
 The Tunnelmole Service is licensed under the GNU Affero General Public License v3.0. This license includes some obligations if you modify the code and make it available over a network. 
 
 The client is licensed under the more permissive MIT license, to make it easier for people to integrate it with their own projects.
 
 For more information, see the [Tunnelmole License](https://github.com/robbie-cahill/tunnelmole-service/blob/main/LICENSE.md).
+
+
+### Commercial Licensing
+We can offer the Tunnelmole Service code under a commercial license, this does not impose any obligations under the AGPL and may be more suitable for some commercial uses of the code such as cloud service providers. To discuss this option, email [robbie-cahill@proton.me](robbie-cahill@proton.me).
 
 ### How Tunnelmole works
 ![How Tunnelmole works](/docs/img/how-tunnelmole-works.png)
@@ -174,4 +178,3 @@ Thats the only difference between the code here and whats running on Tunnelmole.
 
 ### Official Website
 The official website for this project is at [https://tunnelmole.com](https://tunnelmole.com). Don't get Tunnelmole from anywhere else other than this website or the official GitHub repositories!
-
