@@ -157,7 +157,7 @@ password = 'changeme'
 To get HTTPs, you will need to register your own SSL certificate (Lets Encrypt can get you one for free) and configure a reverse proxy server such as Nginx to proxy to `tunnelmole-service` over HTTP and Websocket.
 
 ### Open Source License
-The Tunnelmole Service is licensed under the GNU Affero General Public License v3.0. This license includes some obligations if you modify the code and make it available over a network. 
+Unless alternative arrangements have been made, the Tunnelmole Service is licensed under the GNU Affero General Public License v3.0. This license includes some obligations if you modify the code and make it available over a network. 
 
 The client is licensed under the more permissive MIT license, to make it easier for people to integrate it with their own projects.
 
