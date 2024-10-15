@@ -164,8 +164,10 @@ The client is licensed under the more permissive MIT license, to make it easier 
 For more information, see the [Tunnelmole License](https://github.com/robbie-cahill/tunnelmole-service/blob/main/LICENSE.md).
 
 
-### Commercial Licensing
-We can offer the Tunnelmole Service code under a commercial license, this does not impose any obligations under the AGPL and may be more suitable for some commercial uses of the code such as cloud service providers. To discuss this option, email [robbie-cahill@proton.me](mailto:robbie-cahill@proton.me).
+### Commercial Support and Licensing
+Unlock the full potential of the Tunnelmole Service for your business! If you're self-hosting and interested in commercial support options, contact us at [robbie-cahill@proton.me](mailto:robbie-cahill@proton.me).
+
+For cloud service providers or businesses seeking more flexibility that what the AGPL license can offer, we can license Tunnelmole Service code under a commercial source license. To learn more email[robbie-cahill@proton.me](mailto:robbie-cahill@proton.me).
 
 ### How Tunnelmole works
 ![How Tunnelmole works](/docs/img/how-tunnelmole-works.png)
