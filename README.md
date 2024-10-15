@@ -165,7 +165,7 @@ For more information, see the [Tunnelmole License](https://github.com/robbie-cah
 
 
 ### Commercial Licensing
-We can offer the Tunnelmole Service code under a commercial license, this does not impose any obligations under the AGPL and may be more suitable for some commercial uses of the code such as cloud service providers. To discuss this option, email [robbie-cahill@proton.me](robbie-cahill@proton.me).
+We can offer the Tunnelmole Service code under a commercial license, this does not impose any obligations under the AGPL and may be more suitable for some commercial uses of the code such as cloud service providers. To discuss this option, email [robbie-cahill@proton.me](mailto:robbie-cahill@proton.me).
 
 ### How Tunnelmole works
 ![How Tunnelmole works](/docs/img/how-tunnelmole-works.png)
