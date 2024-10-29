@@ -39,6 +39,7 @@
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-typescript": "^7.22.5",
     "@types/jest": "^29.5.3",
+    "nodemon": "^3.1.7",
     "ts-node": "^10.9.1"
   }
 }
