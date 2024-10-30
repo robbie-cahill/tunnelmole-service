@@ -7,7 +7,7 @@
     "build": "tsc -p ./",
     "watch": "tsc -p ./ -w",
     "test": "npm run build && jest",
-    "start": "docker-compose up & npm run watch & nodemon dist/srv/index.js",
+    "start": "npm run watch & nodemon dist/srv/index.js",
     "start-prod": "node dist/srv/index.js"
   },
   "author": "",
@@ -39,6 +39,7 @@
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-typescript": "^7.22.5",
     "@types/jest": "^29.5.3",
+    "nodemon": "^3.1.7",
     "ts-node": "^10.9.1"
   }
 }
