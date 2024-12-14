@@ -1,8 +1,8 @@
 import ForwardedResponseMessage from "../messages/forwarded-response-message"
 
-const logResponse = (response: ForwardedResponseMessage) => {
+const logResponse = (response: ForwardedResponseMessage, tunnelmoleSubdomain: string) => {
     if (process.env.TUNNELMOLE_LOG_LEVEL = "debug") {
-        console.info(`Response: ${JSON.stringify(response)}`)
+        console.info(`Response from ${tunnelmoleSubdomain}: ${JSON.stringify(response)}`)
     }
 }
 
