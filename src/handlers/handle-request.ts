@@ -5,6 +5,7 @@ import ForwardedRequestMessage from "../messages/forwarded-request-message";
 import ForwardedResponseMessage from "../messages/forwarded-response-message";
 import { nanoid } from 'nanoid';
 import websocket from "../../websocket";
+import { logResponse } from "../logging/log-response";
 
 const capitalize = require('capitalize');
 const tenMinutesInMilliseconds = 300000;
@@ -49,6 +50,7 @@ const handleRequest = async function(request : Request, response : Response) {
     const forwardedResponseHandler = (text: string) => {
         try {
             const forwardedResponseMessage : ForwardedResponseMessage = JSON.parse(text);
+            logResponse(forwardedResponseMessage); // Log if debug logging is enabled
             const body = Buffer.from(forwardedResponseMessage.body, 'base64');
             forwardedResponseMessage.headers['x-forwarded-for'] = connection.websocket.ipAddress;
 
