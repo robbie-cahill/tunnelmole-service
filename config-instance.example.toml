@@ -41,3 +41,5 @@ database = 'tunnelmole'
 [runtime]
 debug = true
 enableLogging = false
+connectionTimeout = 43200
+timeoutCheckFrequency = 5000

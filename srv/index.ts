@@ -8,7 +8,7 @@ import * as WebSocket from 'ws';
 import websocket from "../websocket";
 import HostipWebSocket from "../src/websocket/host-ip-websocket";
 import moment from 'moment';
-import { TWELVE_HOURS_IN_SECONDS } from "../constants";
+import { connectionTimeoutLoop } from "../src/websocket/connection-timeout-loop";
 
 const HTTP_PORT = config.server.httpPort || null;
 const ENVIRONMENT = config.environment;
@@ -48,25 +48,8 @@ wss.on('connection', websocket);
 
 
 // Ping/pong to stop connection timing out after 60 seconds (websocket default)
-function noop() {}
-const interval = setInterval(function ping() {
-    wss.clients.forEach(function each(websocket : HostipWebSocket) {
-        const now = moment().unix();
-        const timeout = TWELVE_HOURS_IN_SECONDS;
-        const connectionExpiry = websocket.connectionStart + timeout;
-
-        if (now > connectionExpiry) {
-            console.info("Connection timeout of " + timeout + " seconds has passed, terminating connection");
-            return websocket.terminate();
-        }
-
-        console.info("Sending ping");
-
-        // Client will send back pong automatically as per the Websocket spec
-        websocket.ping(noop);
-    });
-}, 45000);
+const timeoutLoop = connectionTimeoutLoop(wss.clients);
 
 wss.on('close', function close() {
-  clearInterval(interval);
+  clearInterval(timeoutLoop);
 });
