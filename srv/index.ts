@@ -9,6 +9,7 @@ import websocket from "../websocket";
 import HostipWebSocket from "../src/websocket/host-ip-websocket";
 import moment from 'moment';
 import { connectionTimeoutLoop } from "../src/websocket/connection-timeout-loop";
+import { setupGracefulShutdown } from "../src/server/setup-graceful-shutdown";
 
 const HTTP_PORT = config.server.httpPort || null;
 const ENVIRONMENT = config.environment;
@@ -53,3 +54,6 @@ const timeoutLoop = connectionTimeoutLoop(wss.clients);
 wss.on('close', function close() {
   clearInterval(timeoutLoop);
 });
+
+// Graceful shutdown handling
+setupGracefulShutdown();
