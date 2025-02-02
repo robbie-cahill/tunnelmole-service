@@ -3,6 +3,7 @@ import { ROOT_DIR } from '../../constants';
 import HostipWebSocket from '../websocket/host-ip-websocket';
 import InitialiseMessage from '../messages/initialise-message';
 import InvalidSubscriptionMessage from '../messages/invalid-subscription-message';
+import initialise from '../message-handlers/initialise';
 
 const authorize = async(message: InitialiseMessage, websocket: HostipWebSocket, randomSubdomain: string) : Promise<boolean> => {
     const { apiKey } = message;
@@ -11,6 +12,10 @@ const authorize = async(message: InitialiseMessage, websocket: HostipWebSocket, 
     const apiKeyRecord = apiKeys.find((record: any) => {
         return record.apiKey == apiKey;
     });
+
+    if (process.env.LOG_CONNECTION_INFO) {
+        console.info(JSON.stringify(message.connectionInfo));
+    }
 
     // No API key record. Send back a message, close the connection and return false 
     if (typeof apiKeyRecord == 'undefined') {
