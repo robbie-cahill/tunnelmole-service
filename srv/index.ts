@@ -49,6 +49,17 @@ wss.on('connection', websocket);
 
 
 // Ping/pong to stop connection timing out after 60 seconds (websocket default)
+function noop() {}
+const interval = setInterval(function ping() {
+    wss.clients.forEach(function each(websocket : HostipWebSocket) {
+        console.info("Sending ping");
+
+        // Client will send back pong automatically as per the Websocket spec
+        websocket.ping(noop);
+    });
+}, 45000);
+
+// Timeout loop
 const timeoutLoop = connectionTimeoutLoop(wss.clients);
 
 wss.on('close', function close() {
