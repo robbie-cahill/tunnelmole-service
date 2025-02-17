@@ -4,12 +4,13 @@ import { Message } from "../telemetry/message";
 import { getConnection } from "../mysql/connection";
 
 const logTelemetryMessage = async function(message: Message) {
-    const connection = await getConnection();
     const enableLogging = config.runtime.enableLogging ?? false;
 
     if (!enableLogging) {
         return;
     }
+
+    const connection = await getConnection();
 
     const date = moment().tz('Australia/Sydney').format('YYYY-MM-DD HH:mm:ss');
     const sql = `
