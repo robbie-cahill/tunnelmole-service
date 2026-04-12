@@ -4,19 +4,26 @@ import handleRequest from './src/handlers/handle-request';
 import logTelemetry from './src/handlers/log-telemetry';
 
 import express from 'express';
-import bodyParser from 'body-parser';
+import getRawBody from 'raw-body';
 import unreserveSubdomain from './src/handlers/unreserve-subdomain';
 import config from './config';
 const app = express();
 
-// Body will be a Buffer, easy to transfer to the client untouched
-const options = {
-  inflate: false,
-  type: '*/*',
-  limit: config.server.maxRequestSize ?? '5mb'
-};
-
-app.use(bodyParser.raw(options));
+app.use(async (req, res, next) => {
+    try {
+        const body = await getRawBody(req, {
+            limit: config.server.maxRequestSize ?? '5mb',
+        });
+        req.body = body;
+        next();
+    } catch (error) {
+        if (error.type === 'entity.too.large') {
+            res.status(413).send('Request entity too large');
+        } else {
+            next(error);
+        }
+    }
+});
 
 app.get("/tunnelmole-connections", tunnelmoleConnections);
 app.post("/tunnelmole-log-telemetry", logTelemetry);
