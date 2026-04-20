@@ -27,7 +27,7 @@ bannedHostnames = [
 ]
 
 ###
-# MySQL is used for Logging wnen it is enabled
+# MySQL is used for Logging when it is enabled
 ###
 [mysql]
 host = 'localhost'
