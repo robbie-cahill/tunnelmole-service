@@ -1,5 +1,7 @@
 const OK_NO_CONTENT = 204;
+const UNAUTHORIZED = 401;
 
 export {
-    OK_NO_CONTENT
+    OK_NO_CONTENT,
+    UNAUTHORIZED
 }

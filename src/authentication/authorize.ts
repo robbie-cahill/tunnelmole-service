@@ -1,24 +1,18 @@
-import fs from 'fs';
-import { ROOT_DIR } from '../../constants';
 import HostipWebSocket from '../websocket/host-ip-websocket';
 import InitialiseMessage from '../messages/initialise-message';
 import InvalidSubscriptionMessage from '../messages/invalid-subscription-message';
 import initialise from '../message-handlers/initialise';
+import { isAuthorizedApiKey } from './api-key';
 
 const authorize = async(message: InitialiseMessage, websocket: HostipWebSocket, randomSubdomain: string) : Promise<boolean> => {
     const { apiKey } = message;
-    const apiKeys = JSON.parse(fs.readFileSync(ROOT_DIR + "/src/authentication/apiKeys.json").toString());
-
-    const apiKeyRecord = apiKeys.find((record: any) => {
-        return record.apiKey == apiKey;
-    });
 
     if (process.env.LOG_CONNECTION_INFO) {
         console.info(JSON.stringify(message.connectionInfo));
     }
 
     // No API key record. Send back a message, close the connection and return false 
-    if (typeof apiKeyRecord == 'undefined') {
+    if (!isAuthorizedApiKey(apiKey)) {
         const invalidSubscriptionMessage : InvalidSubscriptionMessage = {
             type: "invalidSubscription",
             apiKey: apiKey

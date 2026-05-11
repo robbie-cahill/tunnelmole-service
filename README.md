@@ -77,7 +77,7 @@ NOTE: The `https` URL won't work without extra setup, see below.
 #### Security
 The service is wide open for anyone wishing to generate random URLs, so keep this in mind.
 
-Custom subdomains require adding an API key to `src/authentication/apiKeys.json` in `tunnelmole-service`. You can then run `node dist/src/index.js --set-api-key <your api key>`. 
+Custom subdomains require adding an API key to `src/authentication/apiKeys.json` in `tunnelmole-service`. You can then run `node dist/src/index.js --set-api-key <your api key>`. Releasing a reserved custom subdomain with `DELETE /tunnelmole/unreserve-subdomain` also requires a valid API key from this file.
 
 
 All custom subdomains need to be added to your hosts file if you are running `tunnelmole-service` locally. 
