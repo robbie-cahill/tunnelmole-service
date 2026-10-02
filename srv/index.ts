@@ -52,7 +52,7 @@ wss.on('connection', websocket);
 function noop() {}
 const interval = setInterval(function ping() {
     wss.clients.forEach(function each(websocket : HostipWebSocket) {
-        console.info("Sending ping");
+        // console.info("Sending ping"); // Pollutes logs, only uncomment if needed
 
         // Client will send back pong automatically as per the Websocket spec
         websocket.ping(noop);
