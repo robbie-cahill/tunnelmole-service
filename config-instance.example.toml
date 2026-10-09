@@ -26,6 +26,11 @@ bannedHostnames = [
     'evil.com'
 ]
 
+# When false, API keys are only required for custom subdomains.
+# When true, all tunnel connections require a valid API key.
+[authentication]
+requireApiKey = false
+
 ###
 # MySQL is used for Logging wnen it is enabled
 ###
