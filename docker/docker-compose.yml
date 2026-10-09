@@ -1,0 +1,61 @@
+services:
+  tunnelmole:
+    image: ghcr.io/robbie-cahill/tunnelmole-service:latest
+    # Keep the app process unprivileged unless the image explicitly needs root-only access.
+    user: node
+    env_file:
+      # Local overrides are optional so a fresh checkout can start with the mounted TOML config alone.
+      - path: .env
+        required: false
+    ports:
+      - '8000:8000'
+      - '8080:8080'
+    volumes:
+      - ./config-instance.toml:/app/config-instance.toml:ro
+      - ./apiKeys.json:/app/src/authentication/apiKeys.json:ro
+    depends_on:
+      mysql:
+        # Avoid startup races when DB-backed logging is enabled in config-instance.toml.
+        condition: service_healthy
+    healthcheck:
+      # The service does not expose a dedicated health endpoint, so treat any non-5xx HTTP response as alive.
+      test: ['CMD-SHELL', 'node -e "require(''node:http'').get(''http://127.0.0.1:8000'', res => process.exit(res.statusCode < 500 ? 0 : 1)).on(''error'', () => process.exit(1))"']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    # MySQL should not need root for normal runtime after its entrypoint prepares the data directory.
+    user: mysql
+    environment:
+      # The application uses MYSQL_USER below; do not grant it root for routine telemetry writes.
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: tunnelmole
+      MYSQL_USER: tunnelmole
+      MYSQL_PASSWORD: changeme
+    volumes:
+      # Persist DB state across container replacement and image upgrades.
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u "$$MYSQL_USER" --password="$$MYSQL_PASSWORD" --silent']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    restart: unless-stopped
+
+volumes:
+  mysql-data:

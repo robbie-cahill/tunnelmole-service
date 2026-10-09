@@ -8,8 +8,8 @@ debug.log
 storage
 config-instance.toml
 config-instance.production.toml
+.env
 *.log
 *.js
 *.js.map
 /dist
-/scripts

@@ -1,0 +1,29 @@
+# Please read ../config-instance.example.toml for configuration options and documentation.
+# This file is mounted into the Docker container as a read-only volume, so changes here will be reflected in the container without needing to rebuild the image.
+
+environment = "production"
+
+[server]
+# Don't change ports here, change in Docker port mapping if needed (e.g. -p 9000:8080).
+httpPort = 8000
+websocketPort = 8080
+domain = 'localhost'
+password = 'changeme'
+bannedIps = []
+bannedClientIds = []
+bannedHostnames = []
+
+[authentication]
+requireApiKey = false
+
+[mysql]
+host = 'mysql'
+user = 'tunnelmole'
+password = 'changeme'
+database = 'tunnelmole'
+
+[runtime]
+debug = false
+enableLogging = true
+connectionTimeout = 43200
+timeoutCheckFrequency = 5000

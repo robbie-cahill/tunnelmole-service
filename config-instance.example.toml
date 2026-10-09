@@ -1,45 +1,83 @@
+# Application environment label used by the service at runtime.
 environment = "local"
 
 ###
-# Config for the web and websockets servers
-# The password is for any routes you want to password protect
-# By default this is only the endpoint that lists active connections for debugging purposes
+# Web server and WebSocket server settings.
 ###
 [server]
+# HTTP port used for inbound HTTP requests forwarded through Tunnelmole.
+# server.httpPort = 8000
 httpPort = 8000
+
+# WebSocket port used by Tunnelmole clients to connect to the service.
+# IMPORTANT: when running in Docker/containers this must remain 8080 inside the container.
+# To use a different external port, keep this at 8080 and change Docker port mapping (for example -p 9000:8080).
+# server.websocketPort = 8080
 websocketPort = 8080
-domain = 'localhost'
-password = 'changeme'
 
-# A list of banned IPs
-bannedIps = [
-    '999.999.999.999',
-]
+# Base domain used to generate assigned hostnames.
+# server.domain = "localhost"
+domain = "localhost"
 
-# A list of banned Client IDs
-bannedClientIds = [
-    'df3453rewr349543utff'
-]
+# Password for protected admin/debug endpoints (like /tunnelmole-connections).
+# server.password = "changeme"
+password = "changeme"
 
-# A list of banned hostnames
-bannedHostnames = [
-    'evil.com'
-]
+# Maximum accepted inbound HTTP request size for proxied requests.
+# Uses body-parser raw limit format (e.g. "5mb", "10mb", "1gb").
+# server.maxRequestSize = "5mb"
+maxRequestSize = "5mb"
+
+# Banned source IP addresses. Matching clients are shadow banned.
+# server.bannedIps = ["203.0.113.10"]
+bannedIps = ["999.999.999.999"]
+
+# Banned client IDs. Matching clients are shadow banned.
+# server.bannedClientIds = ["df3453rewr349543utff"]
+bannedClientIds = ["df3453rewr349543utff"]
+
+# Banned hostnames for reverse DNS checks. Matching clients are shadow banned.
+# server.bannedHostnames = ["evil.com"]
+bannedHostnames = ["evil.com"]
 
 ###
-# MySQL is used for Logging wnen it is enabled
+# MySQL configuration used only when runtime.enableLogging is true.
 ###
 [mysql]
-host = 'localhost'
-user = 'root'
-password = 'changeme'
-database = 'tunnelmole'
+# MySQL hostname or IP.
+# mysql.host = "localhost"
+host = "localhost"
+
+# MySQL username.
+# mysql.user = "root"
+user = "root"
+
+# MySQL password.
+# mysql.password = "changeme"
+password = "changeme"
+
+# MySQL database name used by telemetry/client log tables.
+# mysql.database = "tunnelmole"
+database = "tunnelmole"
 
 ###
-# Enable or disable debug output and logging
+# Runtime behavior controls.
 ###
 [runtime]
+# Enable verbose debug logging to stdout.
+# runtime.debug = true
 debug = true
+
+# Enable database-backed logging/telemetry writes. You don't need to run mysql if this is false.
+# runtime.enableLogging = false
 enableLogging = false
+
+# Maximum connection lifetime in seconds before terminating a websocket.
+# Default in code is 43200 (12 hours) if omitted.
+# runtime.connectionTimeout = 43200
 connectionTimeout = 43200
+
+# Frequency in milliseconds for timeout checks over active websocket clients.
+# Default in code is 45000 ms if omitted.
+# runtime.timeoutCheckFrequency = 5000
 timeoutCheckFrequency = 5000
