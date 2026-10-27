@@ -12,8 +12,18 @@ Both [tunnelmole-service](https://github.com/robbie-cahill/tunnelmole-service/) 
 For the coding style, we mostly follow [Functional Programming](https://en.wikipedia.org/wiki/Functional_programming) patterns. To prevent that devolving into a big ball of Spaghetti code, we follow best practices such as Single Purpose, DRY, consistent naming patterns and clean dependency management. The TypeScript compiler helps catch bugs early.
 
 ### Prerequisites
-- NodeJS 16 or later
+- NodeJS v24 or later. It may run on earlier versions but this is not recommended as multiple CVE's affect earlier node versions
 - TypeScript 4.9.3 or later
+
+#### Development environment with Nix (recommended)
+`flake.nix` pins the exact Node.js version used for development and testing (see `nodeVersion` in the flake), so you don't have to worry about which Node your system has installed.
+
+- With [direnv](https://direnv.net) installed and hooked into your shell, run `direnv allow` once in this directory. The pinned Node.js is then loaded automatically every time you enter the directory.
+- Without direnv, run `nix develop`, which opens a shell containing the pinned Node.js.
+
+Check what you have with `node --version`.
+
+Currently this is Linux only, to get the latest Node 24 security patch from NodeJS using the tarball directly from NodeJS.org.
 
 ### Getting started
 If you just want to use Tunnelmole without setting up your own server or building things from source, head over to the official website at [https://tunnelmole.com](https://tunnelmole.com) and follow the instructions shown to get up and running in minutes!. Like Docker (another open source project) you don't need to build things from source just to run and use Tunnelmole.
