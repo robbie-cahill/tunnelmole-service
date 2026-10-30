@@ -25,11 +25,16 @@ const { verify } = require('reverse-dns-lookup');
 
 export default async function initialise(message: InitialiseMessage, websocket: HostipWebSocket) {
     let subdomain = generateRandomSubdomain(websocket);
-    const authorized = await authorize(message, websocket, subdomain);
-    
-    if (authorized === false) {
-        // You shall not pass
-        return false;
+    const apiKeyRequired = typeof message.subdomain === 'string' || config.authentication?.requireApiKey === true;
+    const apiKeyProvided = typeof message.apiKey === 'string';
+
+    if (apiKeyRequired || apiKeyProvided) {
+        const authorized = await authorize(message, websocket, subdomain);
+
+        if (authorized === false) {
+            // You shall not pass
+            return false;
+        }
     }
 
     // By default use a random subdomain unless the subscription is valid and a subdomain is passed
